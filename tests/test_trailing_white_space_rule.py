@@ -12,6 +12,10 @@ class TrailingWhiteSpaceTestCase(TestCase):
     FIXED_INPUT = ["INT someVariable\n"]
 
     def test_rule_without_fix(self):
+        cli_args = _create_arg_parser().parse_args(['--fix', 'test_rule_with_fix'])
+        linter = Linter(cli_args, config)
+        (lines, _) = linter.lint_lines('test_rule_with_fix', self.TEST_INPUT)
+        self.assertEqual(lines, self.FIXED_INPUT)
         cli_args = _create_arg_parser().parse_args(["test_rule_without_fix"])
         reload(config)
         config.REPORTER = MemoryReporter
